@@ -14,7 +14,9 @@
     "winston": "*",
     "minimist": "*",
     "swig": "*",
-    "socket.io": "*"
+    "socket.io": "*",
+    "body-parser": "*",
+    "busboy": "*"
   },
 	"scripts": {
     "start": "node index.js"

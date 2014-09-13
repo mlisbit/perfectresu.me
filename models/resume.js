@@ -2,7 +2,7 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 
 var ResumeSchema = new Schema({
-    file_location: String,
+    file: String,
     rating: Number,
     comments: [String],
     views: Number,

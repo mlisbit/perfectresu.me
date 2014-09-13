@@ -11,8 +11,8 @@
 </head>
 <body>
 	<div>Please upload your resume.</div>
-	<form name="input" action="/upload" method="POST">
-		file location:  <input type="file" name="file"><br>
+	<form name="input" action="/upload" enctype="multipart/form-data" method="POST">
+		file:  <input type="file" name="file"><br>
     	rating: <input type="number" name="rating"><br>
     	tags: <input type="text" name="tags"><br>
 		<input type="submit" value="Submit">

@@ -6,6 +6,7 @@ var reload = require('reload');
 var mongoose = require("mongoose");
 var mongo = require("mongodb");
 var swig = require("swig");
+var bodyParser = require('body-parser');
 
 var my_conf = require('./config.json');
 
@@ -21,6 +22,8 @@ server.listen(app.get('port'));
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
+app.set('uploadDir', __dirname + '/../public/uploaded/files');
+app.set('uploadUrl', '/uploaded/files/');
 
 /* ROUTES */
 var index = require('./routes/index');
@@ -34,11 +37,13 @@ var args = require("minimist")(process.argv.slice(2))
 //all environments
 app.set('port', process.env.PORT || my_conf.server_options.port);
 app.configure(function() {
+
 	app.use(express.favicon(__dirname + '/public/favicon.ico'));
 	app.use(express.logger('dev'));
 	app.use(express.json());
 	app.use(express.urlencoded());
 	app.use(express.methodOverride());
+	app.use(express.bodyParser());
 	app.use(express.cookieParser(my_conf.server_options.cookie_parser_secret));
 	app.use(express.session());
 	app.use(app.router);
@@ -98,6 +103,8 @@ app.configure('production', function() {
 app.get('/', index.index);
 app.get('/upload', index.upload_get);
 app.post('/upload', index.upload_post);
+app.get('/list', index.list);
+app.get('/clear', index.clear);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
