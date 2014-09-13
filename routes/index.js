@@ -35,6 +35,22 @@ exports.upload_post = function(req, res, next){
 
 //PUT
 exports.upload_put = function(req, res, next) {
+	/*	
+		ratings: {
+	    	asthetics: {
+	    		count: [Number],
+	    		sum: [Number]
+	    	},
+	    	content: {
+	    		count: [Number],
+	    		sum: [Number]
+	    	},
+	    	grammer: {
+	    		count: [Number],
+	    		sum: [Number]
+	    	}
+    	}
+	*/
 	inc_fields = {
 		rating_count: 1,
 		rating_sum: req.body.rating
@@ -50,7 +66,7 @@ exports.upload_put = function(req, res, next) {
 				console.log(err);
 				res.send(err);
 			} else {
-				res.send("whats done is done.")
+				res.render('index.html')
 			}	
 		});
 }

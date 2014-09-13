@@ -39,10 +39,31 @@
 
 			<div class="rating-container">
 				<div class="rating-label">Asthetics</div>
-				<div class="rating"></div>
+				<div class="asthetic_rating"></div>
 
 				<div class="rating-label">Content</div>
-				<div class="rating"></div>
+				<div class="content_rating"></div>
+
+				<div class="rating-label">Grammer</div>
+				<div class="grammer_rating"></div>
+			</div>
+
+			<div class="comment-container">
+				{% if resume.comments %}
+					<h4>Comments</h4>
+					{% for comment in resume.comments %}
+						<div class='comment'>{{comment}}</div>
+					{% endfor %}
+				{% endif %}
+
+				<p>{{resume.file}}</p>
+				<div class="comment-label">Comment</div>
+				<form action="/upload" id="usrform" method="POST">
+					<input type="hidden" name="_method" value="PUT">
+					<input type="hidden" name="file" value="{{resume.file_name}}">
+					<textarea name="comment" placeholder="Enter text here..." form="usrform"></textarea>
+					<input class='button success' type="submit">
+				</form>
 			</div>
 			{% endif %}
 			
@@ -76,9 +97,42 @@
 	<script type="text/javascript" src="/scripts/jquery.raty-fa.js"></script>
 	<script type="text/javascript" src="https://rawgit.com/websanova/js-url/master/url.min.js"></script>
 	<script type="text/javascript">
-		$('div.rating').raty({
+		var asthetic_rating = 4;
+		var content_rating = 4;
+		var grammer_rating = 3.6;
+
+		function handle_raty_click(obj, score) {
+			console.log('clicked on dat raty rate rate rate...' + score)
+			console.log(obj.className)
+		}
+
+		function add_rating(which) {
+
+		}
+		
+		$('.rating-container .asthetic_rating').raty({
 			half: true,
-			size: 34
+			size: 34,
+			score: asthetic_rating,
+			click: function(score, e) {
+				handle_raty_click($(this)[0], score)
+			}
+		})
+		$('.rating-container .content_rating').raty({
+			half: true,
+			size: 34,
+			score: content_rating,
+			click: function(score, e) {
+				handle_raty_click($(this)[0], score)
+			}
+		})
+		$('.rating-container .grammer_rating').raty({
+			half: true,
+			size: 34,
+			score: grammer_rating,
+			click: function(score, e) {
+				handle_raty_click($(this)[0], score)
+			}
 		})
 		var current_listing = parseInt(document.URL.split('/')[4]);
 
@@ -126,6 +180,7 @@
 
 
 		function add_tag_to_query(tag) {
+			tag = tag.toLowerCase();
 			var query = url('?')
 			if (!query) {
 				query = 'tags='+tag

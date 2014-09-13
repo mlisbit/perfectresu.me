@@ -86,3 +86,9 @@
 	color: green;
 	cursor: pointer;
 }
+
+.comment {
+	background:#FAFAFA;
+	margin-top: 2px;
+	padding: 5px;
+}

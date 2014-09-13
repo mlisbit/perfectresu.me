@@ -3,11 +3,23 @@ var Schema = mongoose.Schema;
 
 var ResumeSchema = new Schema({
     file_name: {type: String, unique: true},
-    rating_sum: Number,
-    rating_count: Number,
     comments: [String],
     views: Number,
-    tags: [String]
+    tags: [String],
+    ratings: {
+    	asthetics: {
+    		count: [Number],
+    		sum: [Number]
+    	},
+    	content: {
+    		count: [Number],
+    		sum: [Number]
+    	},
+    	grammer: {
+    		count: [Number],
+    		sum: [Number]
+    	}
+    }
 });
 
 var UserSchema = new Schema({
