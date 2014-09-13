@@ -22,8 +22,7 @@ server.listen(app.get('port'));
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 app.set('views', __dirname + '/views');
-app.set('uploadDir', __dirname + '/../public/uploaded/files');
-app.set('uploadUrl', '/uploaded/files/');
+app.use(express.static(__dirname + '/public'));
 
 /* ROUTES */
 var index = require('./routes/index');
@@ -37,7 +36,6 @@ var args = require("minimist")(process.argv.slice(2))
 //all environments
 app.set('port', process.env.PORT || my_conf.server_options.port);
 app.configure(function() {
-
 	app.use(express.favicon(__dirname + '/public/favicon.ico'));
 	app.use(express.logger('dev'));
 	app.use(express.json());
@@ -103,8 +101,10 @@ app.configure('production', function() {
 app.get('/', index.index);
 app.get('/upload', index.upload_get);
 app.post('/upload', index.upload_post);
+app.put('/upload', index.upload_put);
 app.get('/list', index.list);
 app.get('/clear', index.clear);
+app.get('/browse', index.browse);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
