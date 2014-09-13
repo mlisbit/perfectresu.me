@@ -8,16 +8,16 @@ var ResumeSchema = new Schema({
     tags: [String],
     ratings: {
     	asthetics: {
-    		count: [Number],
-    		sum: [Number]
+    		count: {type: Number, default: 0},
+    		sum: {type: Number, default: 0}
     	},
     	content: {
-    		count: [Number],
-    		sum: [Number]
+    		count: {type: Number, default: 0},
+    		sum: {type: Number, default: 0}
     	},
     	grammer: {
-    		count: [Number],
-    		sum: [Number]
+    		count: {type: Number, default: 0},
+    		sum: {type: Number, default: 0}
     	}
     }
 });

@@ -35,39 +35,43 @@ exports.upload_post = function(req, res, next){
 
 //PUT
 exports.upload_put = function(req, res, next) {
-	/*	
-		ratings: {
-	    	asthetics: {
-	    		count: [Number],
-	    		sum: [Number]
-	    	},
-	    	content: {
-	    		count: [Number],
-	    		sum: [Number]
-	    	},
-	    	grammer: {
-	    		count: [Number],
-	    		sum: [Number]
-	    	}
-    	}
-	*/
 	inc_fields = {
-		rating_count: 1,
-		rating_sum: req.body.rating
+		'ratings.asthetics.count': 1,
+		'ratings.asthetics.sum': parseFloat(req.body.asthetics_rating),
+		'ratings.content.count': 1,
+		'ratings.content.sum': parseFloat(req.body.content_rating),
+		'ratings.grammer.count': 1,
+		'ratings.grammer.sum': parseFloat(req.body.grammer_rating),
 	};
 
 	add_fields = {
 		comments: req.body.comment
 	};
 
-	Resume.update({file_name: req.body.file}, {$inc: inc_fields, $addToSet: add_fields}, 
+	console.log(req.body.asthetics_rating);
+
+	if (!req.body.comment) {delete add_fields.comments};
+	if (!req.body.asthetics_rating) {
+		delete inc_fields['ratings.asthetics.count'];
+		delete inc_fields['ratings.asthetics.sum']
+	};
+	if (!req.body.content_rating) {
+		delete inc_fields['ratings.content.count'];
+		delete inc_fields['ratings.content.sum']
+	};
+	if (!req.body.grammer_rating) {
+		delete inc_fields['ratings.grammer.count'];
+		delete inc_fields['ratings.grammer.sum']
+	};
+
+	Resume.update({file_name: req.body.file}, {$inc: inc_fields	, $addToSet: add_fields}, 
 		function(err) {
 			if (err) { 
 				console.log(err);
 				res.send(err);
 			} else {
 				res.render('index.html')
-			}	
+			}
 		});
 }
 

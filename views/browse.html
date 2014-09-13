@@ -97,13 +97,34 @@
 	<script type="text/javascript" src="/scripts/jquery.raty-fa.js"></script>
 	<script type="text/javascript" src="https://rawgit.com/websanova/js-url/master/url.min.js"></script>
 	<script type="text/javascript">
-		var asthetic_rating = 4;
-		var content_rating = 4;
-		var grammer_rating = 3.6;
+		var asthetic_rating = {{ resume.ratings.asthetics.sum }} / {{ resume.ratings.asthetics.count }};
+		var content_rating = {{ resume.ratings.content.sum }} / {{ resume.ratings.content.count }};
+		var grammer_rating = {{ resume.ratings.grammer.sum }} / {{ resume.ratings.grammer.count }};
+
+		var current_file_name = "{{ resume.file_name }}";
 
 		function handle_raty_click(obj, score) {
 			console.log('clicked on dat raty rate rate rate...' + score)
 			console.log(obj.className)
+
+			var data_dict = {
+				file: current_file_name
+			}
+			data_dict[obj.className]=score;
+
+			console.log(data_dict)
+
+			$.ajax({
+				type: 'PUT',
+				url: '/upload',
+				data: data_dict,
+				success: function (resp) {
+
+				},
+				error: function(resp) {
+
+				}
+			});	
 		}
 
 		function add_rating(which) {
@@ -208,5 +229,7 @@
 			var selected_tag = $(this).parent()[0].innerText
 			window.location.href = '/browse/0'+remove_tag_from_query(selected_tag)
 		})
+
+		
 	</script>
 {% endblock %}
