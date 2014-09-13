@@ -1,5 +1,9 @@
+.pdf-pane {
+	padding: 0px !important;
+	margin: 0px !important;
+}
 #pdf {
-	//width: 50%;
+	width: 100%;
 	height: 80%;
 }
 
@@ -8,13 +12,16 @@
 	border: solid 1px #666;
 }
 
+.info-bar {
+
+}
 
 #tag-container {
 	margin-top: 20px;
 }
 
 #tag-container .tag-label {
-	font-size: 20px;
+	//font-size: 15px;
 }
 
 #tag-container .tag-span span {
@@ -41,7 +48,7 @@
 	padding-top: 5px;
 	padding-right: 10px;
 	padding-bottom: 7px;
-	padding-left: 40px;
+	padding-left: 10px;
 	font-size: 1rem;
 	background-color: #008cba;
 	border-color: #007095;
@@ -49,4 +56,24 @@
 	border-radius: 5%;
 }
 
+#tag-container .req-tag .tag-span {
+	padding-left: 40px;
+}
+
+.nav-button {
+	position: absolute;
+	font-size: 50px;
+	top: 45%;
+	padding: 20px;
+	background: #2E2E2E;
+	color: #E6E6E6;
+	opacity: 0.5;
+}
+
+#left {
+	left: 0px;
+}
+#right {
+	right: 0px;
+}
 
