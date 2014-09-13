@@ -68,6 +68,7 @@
 	background: #2E2E2E;
 	color: #E6E6E6;
 	opacity: 0.5;
+	cursor: pointer;
 }
 
 #left {
@@ -77,3 +78,11 @@
 	right: 0px;
 }
 
+.rating i {
+	font-size: 30px;
+}
+
+.add-tags {
+	color: green;
+	cursor: pointer;
+}

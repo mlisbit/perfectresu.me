@@ -3,25 +3,31 @@
 
 {% block head %}
 	<link rel="stylesheet" type="text/css" href="/css/browse.css">
-	<link rel="stylesheet" type="text/css" href="/css/jquery.raty.css">
 {% endblock %}
 
 {% block content %}
-	
 	<div class="main">
 		<div class="info-bar columns large-3">
 			<center>
 				<h3>Open Resume</h3>
 			</center>
+			<div class="home"><a href="/"><i class="fa fa-home"></i></a></div>
 			<div id="tag-container" class="row">
-				<div class="tag-label">Requested tags: </div>
+				<div class="tag-label">Requested tags: <span><i class="add-tags fa fa-plus"></i></span></div>
+
+				<div class="add-tag-field">
+					<form id='tag-form' action="" method="get">
+						<input type="text" name="tags">
+					</form>
+				</div>
 				<div class="req-tag tag-span-container large-9">
-					{% for tag in user.tags %}
-						<span draggable="true" class="tag-span"><span><i class="fa fa-times"></i></span>{{ tag }}</span>
+					{% for tag in search_tags %}
+						<span draggable="true" class="tag-span"><span class="remove"><i class="fa fa-times"></i></span>{{ tag }}</span>
 					{% endfor %}
 				</div>
 			</div>
 
+			{% if not warning %}
 			<div id="tag-container" class="row">
 				<div class="tag-label">Document tags: </div>
 				<div class="tag-span-container large-9">
@@ -38,20 +44,28 @@
 				<div class="rating-label">Content</div>
 				<div class="rating"></div>
 			</div>
+			{% endif %}
 			
 		</div> <!-- info bar -->
 
 		<div class="pdf-pane columns large-9">
+
+			{% if not warning %}
 			<div class="nav-button" id="right">
 				<i class="fa fa-arrow-right"></i>
 			</div>
+
 			<div class="nav-button" id="left">
 				<i class="fa fa-arrow-left"></i>
 			</div>
-
+			{% endif %}
 			<!-- <p>{{ resume|json(4) }}</p> -->
 			<div id="pdf">
-				<object	data="/uploads/{{ resume.file_name }}" type="application/pdf" width="100%" height="100%">
+				{% if warning %}
+					<p>there is nothing that matches your search.</p>
+				{% else %}
+					<object	data="/uploads/{{ resume.file_name }}" type="application/pdf" width="100%" height="100%">
+				{% endif %}
 			</div>
 		</div> <!-- pdf pane -->
 
@@ -59,8 +73,85 @@
 {% endblock %}
 
 {% block end_scripts %}
-	<script type="text/javascript" src="/scripts/jquery.raty.js"></script>
+	<script type="text/javascript" src="/scripts/jquery.raty-fa.js"></script>
+	<script type="text/javascript" src="https://rawgit.com/websanova/js-url/master/url.min.js"></script>
 	<script type="text/javascript">
-		$('div.rating').raty()
+		$('div.rating').raty({
+			half: true,
+			size: 34
+		})
+		var current_listing = parseInt(document.URL.split('/')[4]);
+
+		$(".nav-button").click(function() {
+			current_listing = parseInt(document.URL.split('/')[4]);
+			current_query = document.URL.split('?')[1] || ''
+			if (current_query) {
+				current_query = '?'+current_query
+			}
+			console.log(current_query)
+			if (this.id === 'left' && current_listing > 0) {
+				window.location.href = '/browse/'+(current_listing-1) + current_query;
+			} else if (this.id === 'right') {
+				window.location.href = '/browse/'+(current_listing+1) + current_query;
+			}
+		});
+
+		if (current_listing === 0) {
+			$('#left').hide()
+		}
+
+		if ({{count}} <= current_listing+1) {
+			$('#right').hide()
+		}
+
+		var tags = [];
+		var urlParams;
+		(window.onpopstate = function () {
+		    var match,
+		        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+		        search = /([^&=]+)=?([^&]*)/g,
+		        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+		        query  = window.location.search.substring(1);
+
+		    urlParams = {};
+		    while (match = search.exec(query))
+		       urlParams[decode(match[1])] = decode(match[2]);
+		})();
+
+		$('#tag-form').submit(function(e) {
+			var value = $(e.currentTarget).find('[name=tags]')[0].value
+			e.preventDefault()
+			window.location.href = '/browse/0'+add_tag_to_query(value)
+		})
+
+
+		function add_tag_to_query(tag) {
+			var query = url('?')
+			if (!query) {
+				query = 'tags='+tag
+			} else {
+				query = query+','+tag
+			}
+			return '?'+query
+		}
+
+		function remove_tag_from_query(undesired) {
+			if (url('?').indexOf('='+undesired) > -1) {
+				var query = url('?').replace(undesired, '')
+			} else {
+				var query = url('?').replace(','+undesired, '')
+			}
+			if (query === 'tags=' || query === 'tags=,' || query === 'tags=,,') {
+				return ''
+			} else {
+				return '?'+query
+			}
+		}
+
+		$('.tag-span .remove').click(function(e) {
+			console.log($(this).parent()[0].innerText)
+			var selected_tag = $(this).parent()[0].innerText
+			window.location.href = '/browse/0'+remove_tag_from_query(selected_tag)
+		})
 	</script>
 {% endblock %}

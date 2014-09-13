@@ -63,12 +63,36 @@ exports.list = function(req, res, next){
 };
 
 //GET
-exports.browse = function(req, res, next) {
-	Resume.findOne({},function (err, doc) {
-        res.render('browse', {
-  			resume: doc
-  		});
-    });
+exports.browse = function(req, res, next){
+	var q = req.query
+	var tags = []
+	var args = {}
+	if (q['tags']) {
+		tags = q['tags'].split(',')	
+		args['tags'] = tags
+	}
+
+	Resume.count(args, function(err, count) {
+		Resume
+		.findOne(args)
+		.skip(req.params.current)
+		.exec(function (err, doc) {
+			if (doc) {
+				res.render('browse', {
+	  				resume: doc,
+	  				count: count,
+	  				search_tags: tags
+	  			});	
+			} else {
+				res.render('browse', {
+					count: 0,
+					search_tags: tags,
+	  				warning: "Sorry, but there are no results for your current query."
+	  			});	
+			}
+	    });
+	})
+	
 }
 
 //GET
