@@ -13,10 +13,10 @@ var my_conf = require('./config.json');
 var app = express();
 
 //set up the sockets
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3001);
 var server = http.createServer(app);
 var io = require('socket.io').listen(server, { log: false });
-server.listen(app.get('port'));
+//server.listen(app.get('port'));
 
 //set up the swig
 app.engine('html', swig.renderFile);
