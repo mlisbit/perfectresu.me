@@ -84,8 +84,7 @@ app.configure('development', function() {
 	if (process.env.MONGOHQ_URL) {
 		//if theres an mongohq_url variable set, use that as the url for the db. 
 		db_connection = process.env.MONGOHQ_URL
-		console.log("database URL set : " + process.env.db_connection)
-		
+		console.log("database URL set : " + db_connection)
 	}
 
 	mongoose.connect(db_connection, function(err) {
