@@ -6,8 +6,9 @@ var ResumeSchema = new Schema({
     comments: [String],
     views: Number,
     tags: [String],
+    date: {type: Date, default: Date.now},
     ratings: {
-    	asthetics: {
+    	aesthetics: {
     		count: {type: Number, default: 0},
     		sum: {type: Number, default: 0}
     	},
@@ -15,7 +16,7 @@ var ResumeSchema = new Schema({
     		count: {type: Number, default: 0},
     		sum: {type: Number, default: 0}
     	},
-    	grammer: {
+    	grammar: {
     		count: {type: Number, default: 0},
     		sum: {type: Number, default: 0}
     	}

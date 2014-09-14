@@ -1,9 +1,49 @@
 {% extends 'base.html' %}
 
+{% block head %}
+	<link rel="stylesheet" type="text/css" href="/css/home.css">
+{% endblock %}
+
+
 {% block content %}
-	<div>Hey there.</div>
-	<a href="/upload" class="button secondary success">Upload Resume</a> <br>
-	<a href="/browse/0" class="secondary button">Browse Resumes</a><br>
-	<a href="/list" class="secondary button">List all Resumes</a><br>
-	<a href="/clear" class="button secondary alert">delete database</a>
+	<!-- <a href="/upload" class="button secondary success">Upload Resume</a> <br> -->
+	<div class="row landing">
+		<center>
+			<h1>Pretty Resume</h1>
+			<h3>Awwwards, for resumes.</h3>
+		</center>
+	</div>
+	<div class="row">
+		<div class="columns large-3">
+			<h3>Upload a resume</h3>
+			<form name="input" action="/upload" enctype="multipart/form-data" id="upload-form" method="POST">
+				file:  <input type="file" name="file"><br>
+		    	tags: <input placeholder="comma seperated list of tags..." type="text" name="tags"><br>
+				<input class="button expand success" type="submit" value="Submit">
+			</form>
+		</div>
+		<div class="columns large-3 end">
+			<a href="/browse/0" class="secondary expand button">Browse Resumes</a><br>
+			<a href="/list" class="secondary expand button">List all Resumes</a><br>
+			<a href="/clear" class="button expand secondary alert">delete database</a>
+		</div>
+
+		<div class="columns large-6 end">
+			<center>
+				<h1>{{ count }}</h1>
+				<h4>Total resumes uploaded</h4>
+			</center>
+		</div>
+	</div>
+	<div class='footer row'>
+		<center>
+			<p>contact: mlisbit@gmail.com</p>
+		</center>
+	</div>
+{% endblock %}
+
+{% block end_scripts %}
+	<script type="text/javascript">
+
+	</script>
 {% endblock %}

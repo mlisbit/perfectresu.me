@@ -50,7 +50,6 @@ app.configure(function() {
 app.configure('test', function() {
 	//connect to different db during tests
 	//remove all existing data in the document so there's no conflicts.
-
 	//WHY MUST YOU MAKE ME DO THIS MONGO!!!!!!!!!!!!!!!
 	var count = 0;
 	console.log('TESTING')
@@ -105,6 +104,7 @@ app.put('/upload', index.upload_put);
 app.get('/list', index.list);
 app.get('/clear', index.clear);
 app.get('/browse/:current', index.browse);
+app.get('/tags', index.tags);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

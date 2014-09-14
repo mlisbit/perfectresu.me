@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	{% for resume in resumes %}
+		<p>{{resume.tags}}</p>
+	{% endfor %}
+{% endblock %}

@@ -1,3 +1,7 @@
+html, body {
+	background: #FAFAFA;
+}
+
 .pdf-pane {
 	padding: 0px !important;
 	margin: 0px !important;
@@ -13,7 +17,7 @@
 }
 
 .info-bar {
-
+	background: #FAFAFA;
 }
 
 #tag-container {
@@ -21,7 +25,8 @@
 }
 
 #tag-container .tag-label {
-	//font-size: 15px;
+	margin-top: -10px;
+	margin-bottom: 0px;
 }
 
 #tag-container .tag-span span {
@@ -85,10 +90,69 @@
 .add-tags {
 	color: green;
 	cursor: pointer;
+	float: right;
 }
 
 .comment {
-	background:#FAFAFA;
+	background: #E6E6E6;
 	margin-top: 2px;
 	padding: 5px;
 }
+.comment-pane {
+	max-height: 150px;
+	overflow-y: scroll;
+	overflow-x	: hidden;
+}
+
+.rating-container .rating-box {
+	display: inline-block;
+	width: 45%;
+	background: #E6E6E6;
+	margin-bottom: 4px;
+	text-align: center;
+}
+
+.comment-pane .comment-text{
+	
+}
+
+.comment-area-pane .button{
+	width: 100%;
+	margin-top: -20px;
+}
+
+
+.home {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	padding: 10px;
+	font-size: 30px;
+}
+.home a {
+	color: #666;
+}
+
+.tag-span-container:first {
+	margin-top: -10px;
+}
+
+.tag-span-container {
+	background: white;
+	padding: 4px;
+	width: 100%;
+	margin-bottom: 5px;
+	border-style: dashed;
+	border-color: #ccc;
+}
+
+#tag-form input {
+	display: none;
+	margin-bottom: 0px;
+}
+
+.add-tag-field {
+	margin-bottom: -10px;
+}
+
+.ui-helper-hidden-accessible{display:none}

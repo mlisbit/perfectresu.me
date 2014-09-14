@@ -16,7 +16,8 @@
     "swig": "*",
     "socket.io": "*",
     "body-parser": "*",
-    "busboy": "*"
+    "busboy": "*",
+    "underscore": "*"
   },
 	"scripts": {
     "start": "node index.js"

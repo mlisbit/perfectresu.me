@@ -9,15 +9,17 @@
 	<div class="main">
 		<div class="info-bar columns large-3">
 			<center>
-				<h3>Open Resume</h3>
+				<h3>Pretty Resume</h3>
 			</center>
 			<div class="home"><a href="/"><i class="fa fa-home"></i></a></div>
 			<div id="tag-container" class="row">
 				<div class="tag-label">Requested tags: <span><i class="add-tags fa fa-plus"></i></span></div>
 
 				<div class="add-tag-field">
-					<form id='tag-form' action="" method="get">
-						<input type="text" name="tags">
+					<form id='tag-form' action="" method="get" >
+						<div class="ui-widget">
+							<input id="add-tag-input" type="text" placeholder="Enter tag here..." name="tags">
+						</div>
 					</form>
 				</div>
 				<div class="req-tag tag-span-container large-9">
@@ -38,31 +40,44 @@
 			</div>
 
 			<div class="rating-container">
-				<div class="rating-label">Asthetics</div>
-				<div class="asthetic_rating"></div>
+				<center>
+					<div class="rating-box">
+						<div class="rating-label">Aesthetics</div>
+						<div class="aesthetic_rating"></div>
+					</div>
+					
+					<div class="rating-box">
+						<div class="rating-label">Content</div>
+						<div class="content_rating"></div>
+					</div>
 
-				<div class="rating-label">Content</div>
-				<div class="content_rating"></div>
-
-				<div class="rating-label">Grammer</div>
-				<div class="grammer_rating"></div>
+					<div class="rating-box">
+						<div class="rating-label">Grammar</div>
+						<div class="grammar_rating"></div>
+					</div>
+				</center>
 			</div>
 
 			<div class="comment-container">
+				<h4>Comments</h4>
 				{% if resume.comments %}
-					<h4>Comments</h4>
-					{% for comment in resume.comments %}
-						<div class='comment'>{{comment}}</div>
-					{% endfor %}
+					<div class="comment-pane">
+						{% for comment in resume.comments %}
+							<div class='comment'>{{comment}}</div>
+						{% endfor %}
+					</div>
+				{% else %}
+					<p>There are currently no comments D:</p>
 				{% endif %}
 
-				<p>{{resume.file}}</p>
 				<div class="comment-label">Comment</div>
 				<form action="/upload" id="usrform" method="POST">
 					<input type="hidden" name="_method" value="PUT">
 					<input type="hidden" name="file" value="{{resume.file_name}}">
-					<textarea name="comment" placeholder="Enter text here..." form="usrform"></textarea>
-					<input class='button success' type="submit">
+					<div class="comment-area-pane">
+						<textarea class="comment-text" name="comment" placeholder="Enter comment here..." form="usrform"></textarea>
+						<input class='button success' type="submit">
+					</div>
 				</form>
 			</div>
 			{% endif %}
@@ -96,45 +111,39 @@
 {% block end_scripts %}
 	<script type="text/javascript" src="/scripts/jquery.raty-fa.js"></script>
 	<script type="text/javascript" src="https://rawgit.com/websanova/js-url/master/url.min.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 	<script type="text/javascript">
-		var asthetic_rating = {{ resume.ratings.asthetics.sum }} / {{ resume.ratings.asthetics.count }};
+		var aesthetic_rating = {{ resume.ratings.aesthetics.sum }} / {{ resume.ratings.aesthetics.count }};
 		var content_rating = {{ resume.ratings.content.sum }} / {{ resume.ratings.content.count }};
-		var grammer_rating = {{ resume.ratings.grammer.sum }} / {{ resume.ratings.grammer.count }};
-
+		var grammar_rating = {{ resume.ratings.grammar.sum }} / {{ resume.ratings.grammar.count }};
+		var result_count = {{ count }}
 		var current_file_name = "{{ resume.file_name }}";
 
-		function handle_raty_click(obj, score) {
-			console.log('clicked on dat raty rate rate rate...' + score)
-			console.log(obj.className)
+		$(document).foundation();
 
+		function handle_raty_click(obj, score) {
 			var data_dict = {
 				file: current_file_name
 			}
 			data_dict[obj.className]=score;
 
-			console.log(data_dict)
-
 			$.ajax({
 				type: 'PUT',
 				url: '/upload',
 				data: data_dict,
-				success: function (resp) {
-
+				success: function (data) {
+					$(obj).css('color', '#FFBF00')
 				},
-				error: function(resp) {
-
+				error: function(err) {
+					console.log(err)
 				}
 			});	
-		}
-
-		function add_rating(which) {
-
-		}
+		} //handle raty click
 		
-		$('.rating-container .asthetic_rating').raty({
+		$('.rating-container .aesthetic_rating').raty({
 			half: true,
 			size: 34,
-			score: asthetic_rating,
+			score: aesthetic_rating,
 			click: function(score, e) {
 				handle_raty_click($(this)[0], score)
 			}
@@ -147,10 +156,10 @@
 				handle_raty_click($(this)[0], score)
 			}
 		})
-		$('.rating-container .grammer_rating').raty({
+		$('.rating-container .grammar_rating').raty({
 			half: true,
 			size: 34,
-			score: grammer_rating,
+			score: grammar_rating,
 			click: function(score, e) {
 				handle_raty_click($(this)[0], score)
 			}
@@ -175,7 +184,7 @@
 			$('#left').hide()
 		}
 
-		if ({{count}} <= current_listing+1) {
+		if (result_count <= current_listing+1) {
 			$('#right').hide()
 		}
 
@@ -200,6 +209,11 @@
 		})
 
 
+		$( "#add-tag-input" ).autocomplete({
+			source: '/tags'
+		});
+		 $('.ui-autocomplete').addClass('f-dropdown bottom-align-left');
+
 		function add_tag_to_query(tag) {
 			tag = tag.toLowerCase();
 			var query = url('?')
@@ -223,6 +237,10 @@
 				return '?'+query
 			}
 		}
+
+		$('.add-tags').click(function() {
+			$('#tag-form input').show(100);
+		})
 
 		$('.tag-span .remove').click(function(e) {
 			console.log($(this).parent()[0].innerText)
