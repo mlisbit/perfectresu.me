@@ -1,6 +1,6 @@
 {
 	"server_options": {
-		"port": 8080,
+		"port": 1338,
 		"cookie_parser_secret": "i_know_this_is_public"
 	},
 
