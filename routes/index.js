@@ -33,7 +33,7 @@ exports.upload_post = function(req, res, next){
 	var instance = new Resume(req.body);
 	instance.file_name = req.files.file.path.split('/')[req.files.file.path.split('/').length-1]
 	instance.tags = req.body.tags.toLowerCase().replace(' ', '').split(',');
-	console.log(instance.tags)
+	
 
 	fs.readFile(req.files.file.path, function (err, data) {
 		fs.rename(req.files.file.path, __dirname + '/../public/uploads/' + req.files.file.path.split('/')[req.files.file.path.split('/').length-1], function(err) {
